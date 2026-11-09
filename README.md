@@ -44,33 +44,30 @@ signals, drilling-position telemetry, and electrocardiogram signals:
       <strong>Synthetic pattern</strong>
      </td>
     <td align="center" width="50%">
-      <a href="demos/drilling_cycle_grounding.mp4">
-        <img src="assets/demos/drilling_cycle_grounding.png"
-             alt="Drilling-cycle pattern demo" width="100%">
-      </a>
+      <video
+        src="https://github.com/user-attachments/assets/163ef731-96cc-494f-b77b-c5389806501c"
+        controls>
+      </video>
       <br>
-      <b>Drilling-cycle pattern</b><br>
-      <a href="demos/drilling_cycle_grounding.mp4">▶ Play video</a>
+      <strong>Drilling-cycle pattern</strong>
     </td>
   </tr>
   <tr>
     <td align="center" width="50%">
-      <a href="demos/ecg_heartbeat_query.mp4">
-        <img src="assets/demos/ecg_heartbeat_query.png"
-             alt="ECG heartbeat query demo" width="100%">
-      </a>
+      <video
+        src="https://github.com/user-attachments/assets/c0b37d13-d10c-4a3b-a46c-7ebef3bcc129"
+        controls>
+      </video>
       <br>
-      <b>ECG heartbeat query</b><br>
-      <a href="demos/ecg_heartbeat_query.mp4">▶ Play video</a>
+      <strong>ECG heartbeat query</strong>
     </td>
     <td align="center" width="50%">
-      <a href="demos/ecg_event_grounding.mp4">
-        <img src="assets/demos/ecg_event_grounding.png"
-             alt="ECG event and primitive grounding demo" width="100%">
-      </a>
+      <video
+        src="https://github.com/user-attachments/assets/21e77f4b-54c5-48e3-89b0-dc410f6fc923"
+        controls>
+      </video>
       <br>
-      <b>ECG event and primitive grounding</b><br>
-      <a href="demos/ecg_event_grounding.mp4">▶ Play video</a>
+      <strong>ECG heartbeat query (sliding window)</strong>
     </td>
   </tr>
 </table>
