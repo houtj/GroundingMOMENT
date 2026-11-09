@@ -37,7 +37,7 @@ signals, drilling-position telemetry, and electrocardiogram signals:
   <tr>
      <td width="50%" align="center">
       <video
-        src="[https://github.com/user-attachments/assets/VIDEO_ID_1](https://github.com/user-attachments/assets/7ebb30ba-065b-4906-bbb7-ba9900481c00)"
+        src="https://github.com/user-attachments/assets/7ebb30ba-065b-4906-bbb7-ba9900481c00"
         controls>
       </video>
       <br>
