@@ -11,6 +11,7 @@
 [🖼️ Poster](assets/poster/groundingmoment_emnlp2026_poster.pdf) ·
 [🏗️ Architecture](#-model) ·
 [🎬 Demos](#-demos) ·
+[🤖 Data Generation](https://github.com/houtj/GroundTSSyn) ·
 [✒️ BibTeX](#-citation) ·
 [✉️ Contact](mailto:thou2@slb.com)
 
