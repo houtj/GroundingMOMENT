@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use this research artifact, please cite the GroundingMOMENT paper."
+title: "GroundingMOMENT: Public Architecture Reference"
+type: software
+authors:
+  - family-names: Hou
+    given-names: Tianjun
+    email: thou2@slb.com
+  - family-names: Chang
+    given-names: Xiqing
+  - family-names: Wan
+    given-names: Sky Chenwei
+repository-code: "https://github.com/houtj/GroundingMOMENT"
+url: "https://aclanthology.org/2026.findings-emnlp.229/"
+date-released: 2026-11-04
+preferred-citation:
+  type: conference-paper
+  title: "Language-Guided Time-Series Event Detection with Zero-Shot Cross-Modal Grounding"
+  authors:
+    - family-names: Hou
+      given-names: Tianjun
+    - family-names: Chang
+      given-names: Xiqing
+    - family-names: Wan
+      given-names: Sky Chenwei
+  collection-title: "Findings of the Association for Computational Linguistics: EMNLP 2026"
+  editors:
+    - family-names: Lee
+      given-names: Hung-Yi
+    - family-names: Dev
+      given-names: Sunipa
+    - family-names: Li
+      given-names: Jessy
+    - family-names: Elliott
+      given-names: Desmond
+  publisher:
+    name: "Association for Computational Linguistics"
+  year: 2026
+  month: 10
+  city: "Budapest"
+  country: "Hungary"
+  start: 4813
+  end: 4836
+  doi: "10.18653/2026.findings-emnlp.229"
+  url: "https://aclanthology.org/2026.findings-emnlp.229/"
