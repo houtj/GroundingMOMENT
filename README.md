@@ -36,10 +36,7 @@ signals, drilling-position telemetry, and electrocardiogram signals:
 <table>
   <tr>
     <td align="center" width="50%">
-      <a href="demos/synthetic_pattern_grounding.mp4">
-        <img src="assets/demos/synthetic_pattern_grounding.png"
-             alt="Synthetic compositional pattern demo" width="100%">
-      </a>
+https://github.com/user-attachments/assets/7ebb30ba-065b-4906-bbb7-ba9900481c00
       <br>
       <b>Synthetic compositional pattern</b><br>
       <a href="demos/synthetic_pattern_grounding.mp4">▶ Play video</a>
