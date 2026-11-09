@@ -33,16 +33,16 @@ span of each event and the spans of its constituent structural atomic patterns.
 The included short clips illustrate language-guided grounding on synthetic
 signals, drilling-position telemetry, and electrocardiogram signals:
 
-https://github.com/user-attachments/assets/7ebb30ba-065b-4906-bbb7-ba9900481c00
-
 <table>
   <tr>
-    <td align="center" width="50%">
-https://github.com/user-attachments/assets/7ebb30ba-065b-4906-bbb7-ba9900481c00
+     <td width="50%" align="center">
+      <video
+        src="[https://github.com/user-attachments/assets/VIDEO_ID_1](https://github.com/user-attachments/assets/7ebb30ba-065b-4906-bbb7-ba9900481c00)"
+        controls>
+      </video>
       <br>
-      <b>Synthetic compositional pattern</b><br>
-      <a href="demos/synthetic_pattern_grounding.mp4">▶ Play video</a>
-    </td>
+      <strong>Synthetic pattern</strong>
+     </td>
     <td align="center" width="50%">
       <a href="demos/drilling_cycle_grounding.mp4">
         <img src="assets/demos/drilling_cycle_grounding.png"
