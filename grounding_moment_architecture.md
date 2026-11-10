@@ -157,32 +157,6 @@ its six layers contains:
 4. text-to-time-series cross-attention; and
 5. modality-specific feed-forward updates.
 
-The following pseudocode emphasizes the exchange of information:
-
-```python
-def feature_enhancer(ts, text, ts_position, text_mask):
-    for layer in enhancer_layers:
-        ts = layer.ts_self_attention(ts, position=ts_position)
-        text = layer.text_self_attention(text, mask=text_mask)
-
-        ts = ts + layer.ts_reads_text(
-            query=ts,
-            key=text,
-            value=text,
-            key_padding_mask=~text_mask,
-        )
-        text = text + layer.text_reads_ts(
-            query=text,
-            key=ts,
-            value=ts,
-        )
-
-        ts = layer.ts_feed_forward(ts)
-        text = layer.text_feed_forward(text)
-
-    return ts, text
-```
-
 After this stage:
 
 - each temporal token contains information about the requested event; and
@@ -201,27 +175,6 @@ The decoder uses two query families with different responsibilities:
 An attention-pooling module condenses the fused text tokens into a single
 description vector. Padding tokens receive no probability mass.
 
-```python
-import torch
-from torch import nn
-
-
-class EventDescriptionPooler(nn.Module):
-    def __init__(self, hidden_dim: int = 256):
-        super().__init__()
-        self.token_weight = nn.Sequential(
-            nn.Linear(hidden_dim, hidden_dim),
-            nn.GELU(),
-            nn.Linear(hidden_dim, 1),
-        )
-
-    def forward(self, text_memory, text_mask):
-        logits = self.token_weight(text_memory).squeeze(-1)
-        logits = logits.masked_fill(~text_mask.bool(), float("-inf"))
-        weights = logits.softmax(dim=-1)
-        return torch.sum(weights.unsqueeze(-1) * text_memory, dim=1)
-```
-
 For fused text memory \(M_{\text{text}}\), this computes:
 
 \[
@@ -238,44 +191,11 @@ Every fused temporal token receives two scores:
   queries; and
 - its similarity to the whole-description vector, used for event queries.
 
-```python
-def language_guided_scores(ts_memory, text_memory, text_mask, description):
-    # Pairwise temporal-token/text-token similarity: (B, N, T)
-    token_similarity = torch.einsum(
-        "bnd,btd->bnt",
-        ts_memory,
-        text_memory,
-    )
-    token_similarity = token_similarity.masked_fill(
-        ~text_mask.bool().unsqueeze(1),
-        float("-inf"),
-    )
-
-    primitive_scores = token_similarity.max(dim=-1).values
-    event_scores = torch.einsum("bnd,bd->bn", ts_memory, description)
-    return primitive_scores, event_scores
-```
 
 ### 6.3 Anchor selection and query parts
 
 The highest-scoring temporal locations initialize 64 primitive queries and 16
 event queries. Each query combines content, positional, and residual parts.
-
-```python
-primitive_indices = primitive_scores.topk(64, dim=1).indices
-event_indices = event_scores.topk(16, dim=1).indices
-
-primitive_queries = query_constructor(
-    memory=ts_memory,
-    anchor_indices=primitive_indices,
-    query_type="primitive",
-)
-event_queries = query_constructor(
-    memory=ts_memory,
-    anchor_indices=event_indices,
-    query_type="event",
-)
-```
 
 This initialization makes the decoder queries language-conditioned before
 iterative span refinement begins.
@@ -286,27 +206,6 @@ The six-layer decoder jointly updates both query families. A layer contains
 masked query self-attention, text cross-attention, time-series cross-attention,
 and a feed-forward network.
 
-```python
-queries = concatenate([primitive_queries, event_queries], dim=1)
-
-for layer in decoder_layers:
-    queries = layer.masked_self_attention(
-        queries,
-        attention_mask=compositional_mask,
-    )
-    queries = layer.text_cross_attention(
-        queries,
-        text_memory,
-        text_mask,
-    )
-    queries = layer.ts_cross_attention(
-        queries,
-        ts_memory,
-        ts_position,
-    )
-    queries = layer.feed_forward(queries)
-```
-
 ### Compositional attention mask
 
 The query self-attention mask enforces the intended hierarchy:
@@ -314,28 +213,6 @@ The query self-attention mask enforces the intended hierarchy:
 - primitive queries never read from event queries;
 - during warm-up, event queries are also isolated from primitive queries;
 - after warm-up, event queries may aggregate stable primitive evidence.
-
-```python
-def build_compositional_mask(
-    primitive_queries=64,
-    event_queries=16,
-    *,
-    event_isolation_active,
-):
-    total = primitive_queries + event_queries
-    mask = torch.zeros((total, total), dtype=torch.bool)
-
-    primitive = slice(0, primitive_queries)
-    event = slice(primitive_queries, total)
-
-    # Rows attend to columns; True blocks attention.
-    mask[primitive, event] = True
-
-    if event_isolation_active:
-        mask[event, primitive] = True
-
-    return mask
-```
 
 The post-warm-up direction is therefore compositional: primitives remain
 grounded in local text and signal evidence, while event queries can combine
