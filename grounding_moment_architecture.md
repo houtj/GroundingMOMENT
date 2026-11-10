@@ -386,52 +386,6 @@ Span supervision uses L1 and one-dimensional DIoU losses with Hungarian
 matching. The time-dependent \(\lambda_4(t)\) follows the staged introduction
 of event-to-primitive composition.
 
-## 10. End-to-end paper-level flow
-
-The complete architecture can be summarized without implying an executable
-release:
-
-```python
-def grounding_moment(time_series, input_ids, text_mask, current_epoch):
-    # Encode each modality.
-    ts_levels = moment_with_temporal_pyramid(time_series)
-    text = bert_with_projection(input_ids, text_mask)
-
-    # Exchange information before selecting queries.
-    ts_memory, text_memory, ts_position = early_fusion(
-        ts_levels,
-        text,
-        text_mask,
-    )
-
-    # Construct language-guided primitive and event queries.
-    description = attention_pool(text_memory, text_mask)
-    primitive_scores, event_scores = language_guided_scores(
-        ts_memory,
-        text_memory,
-        text_mask,
-        description,
-    )
-    primitive_queries = construct_topk_queries(ts_memory, primitive_scores, 64)
-    event_queries = construct_topk_queries(ts_memory, event_scores, 16)
-
-    # Decode with staged compositional attention.
-    mask = build_compositional_mask(
-        event_isolation_active=current_epoch < 8,
-    )
-    decoded_queries = hierarchical_decoder(
-        primitive_queries,
-        event_queries,
-        ts_memory,
-        ts_position,
-        text_memory,
-        text_mask,
-        mask,
-    )
-
-    return prediction_heads(decoded_queries, text_memory)
-```
-
 ## Scope of this guide
 
 This guide covers only architecture details disclosed in the paper. It does not
